@@ -1,0 +1,57 @@
+<!-- Hero Section -->
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Welcome to CampusEvents</h1>
+        <p class="col-md-8 fs-4">Discover and manage campus events easily. Join the community today!</p>
+        <a routerLink="/events" class="btn btn-primary btn-lg" type="button">Browse Events</a>
+        <a routerLink="/register" class="btn btn-outline-secondary btn-lg ms-2" type="button">Sign Up</a>
+    </div>
+</div>
+
+<!-- Recent Events Section -->
+<div class="recent-events-section">
+    <h2 class="mb-4">Recent Events</h2>
+    
+    <div *ngIf="loading" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && recentEvents.length === 0" class="alert alert-info">
+        No events available yet. Be the first to create one!
+    </div>
+
+    <div class="row" *ngIf="!loading && !error && recentEvents.length > 0">
+        <div class="col-md-4 mb-4" *ngFor="let event of recentEvents">
+            <div class="card h-100 shadow-sm">
+                <img [src]="event.bannerUrl || 'https://via.placeholder.com/400x200?text=Event'" 
+                     class="card-img-top" 
+                     [alt]="event.title"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <p class="card-text text-muted">
+                        <i class="bi bi-calendar-event"></i> {{ event.date | date:'mediumDate' }}<br>
+                        <i class="bi bi-clock"></i> {{ event.time }}<br>
+                        <i class="bi bi-geo-alt"></i> {{ event.venue }}
+                    </p>
+                    <span class="badge bg-primary">{{ event.category }}</span>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a [routerLink]="['/events', event._id]" class="btn btn-outline-primary btn-sm w-100">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4" *ngIf="!loading && recentEvents.length > 0">
+        <a routerLink="/events" class="btn btn-primary">View All Events</a>
+    </div>
+</div>

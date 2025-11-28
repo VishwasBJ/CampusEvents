@@ -1,0 +1,65 @@
+<div class="container mt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h2 class="fw-bold text-primary">My Events</h2>
+            <p class="text-muted">Manage all the events you've created</p>
+        </div>
+        <div class="col-auto">
+            <a routerLink="/create-event" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Create New Event
+            </a>
+        </div>
+    </div>
+
+    <app-loading-spinner *ngIf="loading" [loading]="loading" message="Loading your events..."></app-loading-spinner>
+
+    <div *ngIf="errorMessage && !loading" class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && !errorMessage" class="row">
+        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let event of events">
+            <div class="card h-100 shadow-sm">
+                <div class="position-relative">
+                    <img [src]="event.bannerUrl || 'https://via.placeholder.com/300x200'" 
+                         class="card-img-top"
+                         alt="Event Banner" 
+                         style="height: 200px; object-fit: cover;">
+                    <span class="position-absolute top-0 end-0 m-2 badge bg-primary">{{ event.category }}</span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{ event.title }}</h5>
+                    <p class="card-text text-muted small mb-2">
+                        <i class="bi bi-calendar"></i> {{ event.date | date:'mediumDate' }} at {{ event.time }}
+                    </p>
+                    <p class="card-text text-muted small mb-2">
+                        <i class="bi bi-geo-alt"></i> {{ event.venue }}
+                    </p>
+                    <p class="card-text text-truncate flex-grow-1">{{ event.description }}</p>
+                    
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn btn-sm btn-outline-primary flex-fill" (click)="onViewDetails(event._id)">
+                            <i class="bi bi-eye"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-warning flex-fill" (click)="onEdit(event._id)">
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger flex-fill" (click)="onDelete(event._id)">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="events.length === 0" class="col-12">
+            <app-empty-state 
+                icon="📅"
+                title="No Events Yet"
+                message="You haven't created any events yet. Start by creating your first event!"
+                actionText="Create Your First Event"
+                actionLink="/create-event">
+            </app-empty-state>
+        </div>
+    </div>
+</div>

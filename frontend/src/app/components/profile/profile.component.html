@@ -1,0 +1,104 @@
+<div class="container-fluid bg-primary py-5 mb-5"
+    style="height: 250px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+    <div class="container text-white">
+        <h1 class="display-4 fw-bold">My Profile</h1>
+        <p class="lead">Manage your account information</p>
+    </div>
+</div>
+
+<div class="container profile-container">
+    <div *ngIf="loading && !user" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading || user" class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card profile-card">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Profile Information</h3>
+                        <button *ngIf="!editMode" class="btn btn-outline-primary" (click)="toggleEditMode()">
+                            ✏️ Edit Profile
+                        </button>
+                        <button *ngIf="editMode" class="btn btn-outline-secondary" (click)="toggleEditMode()">
+                            ❌ Cancel
+                        </button>
+                    </div>
+
+                    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ successMessage }}
+                        <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+                    </div>
+
+                    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ errorMessage }}
+                        <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+                    </div>
+
+                    <div *ngIf="!editMode && user" class="profile-view">
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Name</label>
+                            <p class="fs-5">{{ user.name }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Email</label>
+                            <p class="fs-5">{{ user.email }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Member Since</label>
+                            <p class="fs-5">{{ user.createdAt | date:'longDate' }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Last Updated</label>
+                            <p class="fs-5">{{ user.updatedAt | date:'medium' }}</p>
+                        </div>
+                    </div>
+
+                    <form *ngIf="editMode" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="name" 
+                                formControlName="name"
+                                [class.is-invalid]="name?.invalid && name?.touched"
+                                placeholder="Enter your name">
+                            <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+                                <div *ngIf="name?.errors?.['required']">Name is required</div>
+                                <div *ngIf="name?.errors?.['minlength']">Name must be at least 2 characters</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="email" 
+                                formControlName="email"
+                                [class.is-invalid]="email?.invalid && email?.touched"
+                                placeholder="Enter your email">
+                            <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                                <div *ngIf="email?.errors?.['required']">Email is required</div>
+                                <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="button" class="btn btn-secondary" (click)="toggleEditMode()" [disabled]="loading">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" [disabled]="loading || profileForm.invalid">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                {{ loading ? 'Saving...' : 'Save Changes' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

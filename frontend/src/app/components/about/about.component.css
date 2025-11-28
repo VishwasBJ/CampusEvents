@@ -1,0 +1,55 @@
+.about-container {
+    padding: 2rem 0;
+}
+
+.display-4 {
+    color: #667eea;
+    font-weight: 700;
+}
+
+.lead {
+    font-size: 1.25rem;
+    color: #6c757d;
+}
+
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #e9ecef;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,.1);
+}
+
+.card-title i {
+    font-size: 1.5rem;
+}
+
+.tech-card {
+    transition: all 0.3s;
+    background-color: #f8f9fa;
+}
+
+.tech-card:hover {
+    transform: scale(1.05);
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,.1);
+}
+
+.alert-info {
+    background-color: #e7f3ff;
+    border-color: #b3d9ff;
+    color: #004085;
+}
+
+h2 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    color: #667eea;
+    font-weight: 600;
+}

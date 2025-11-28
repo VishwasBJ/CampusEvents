@@ -1,0 +1,106 @@
+<div class="container-fluid bg-primary py-5 mb-5"
+    style="height: 300px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+    <div class="container text-white">
+        <h1 class="display-4 fw-bold">Dashboard</h1>
+        <p class="lead" *ngIf="user">Welcome back, {{ user.name }}!</p>
+        <p class="lead" *ngIf="!user">Manage your events and registrations.</p>
+    </div>
+</div>
+
+<div class="container floating-dashboard" @slideUpAnimation>
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card card-custom h-100 p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle p-3 me-3">
+                            📝
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0">My Events</h5>
+                            <small class="text-muted">Events you created</small>
+                        </div>
+                    </div>
+                    <h2 class="display-4 fw-bold text-primary">{{ myEvents.length }}</h2>
+                    <a routerLink="/my-events" class="btn btn-sm btn-outline-primary mt-2">View All</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card card-custom h-100 p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success text-white rounded-circle p-3 me-3">
+                            📅
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-0">My Registrations</h5>
+                            <small class="text-muted">Events you're attending</small>
+                        </div>
+                    </div>
+                    <h2 class="display-4 fw-bold text-success">{{ registrations.length }}</h2>
+                    <a routerLink="/my-registrations" class="btn btn-sm btn-outline-success mt-2">View All</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card card-custom h-100 p-4 bg-light">
+                    <h5 class="card-title mb-3">Quick Actions</h5>
+                    <div class="d-grid gap-2">
+                        <a routerLink="/create-event" class="btn btn-primary-custom">
+                            ➕ Create New Event
+                        </a>
+                        <a routerLink="/events" class="btn btn-outline-primary">
+                            🔍 Browse Events
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-4 mb-3">Recent Events You Created</h3>
+        <div class="row" @listAnimation>
+            <div class="col-md-4 mb-4" *ngFor="let event of myEvents.slice(0, 3)">
+                <div class="card card-custom h-100">
+                    <img *ngIf="event.bannerUrl" [src]="event.bannerUrl" class="card-img-top" [alt]="event.title" style="height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">{{ event.category }}</span>
+                        <h5 class="card-title text-primary">{{ event.title }}</h5>
+                        <p class="card-text text-muted mb-1">📅 {{ event.date | date }}</p>
+                        <p class="card-text text-muted">📍 {{ event.venue }}</p>
+                        <a [routerLink]="['/events', event._id]"
+                            class="btn btn-sm btn-outline-secondary stretched-link">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="myEvents.length === 0" class="col-12 text-center py-5">
+                <p class="text-muted fs-5">You haven't created any events yet.</p>
+                <a routerLink="/create-event" class="btn btn-primary-custom">Create Your First Event</a>
+            </div>
+        </div>
+
+        <h3 class="mt-5 mb-3">Recent Registered Events</h3>
+        <div class="row" @listAnimation>
+            <div class="col-md-4 mb-4" *ngFor="let reg of registrations.slice(0, 3)">
+                <div class="card card-custom h-100" *ngIf="getEvent(reg) as event">
+                    <img *ngIf="event.bannerUrl" [src]="event.bannerUrl" class="card-img-top" [alt]="event.title" style="height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">{{ event.category }}</span>
+                        <h5 class="card-title text-primary">{{ event.title }}</h5>
+                        <p class="card-text text-muted mb-1">📅 {{ event.date | date }}</p>
+                        <p class="card-text text-muted">📍 {{ event.venue }}</p>
+                        <a [routerLink]="['/events', event._id]"
+                            class="btn btn-sm btn-outline-secondary stretched-link">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="registrations.length === 0" class="col-12 text-center py-5">
+                <p class="text-muted fs-5">You haven't registered for any events yet.</p>
+                <a routerLink="/events" class="btn btn-primary-custom">Browse Events</a>
+            </div>
+        </div>
+    </div>
+</div>
