@@ -6,7 +6,7 @@ A full-stack web application built using the MEAN stack (MongoDB, Express.js, An
 
 ```
 campusevents/
-├── backend/                 # Node.js/Express backend
+├── backend                 # Node.js/Express backend
 │   ├── controllers/        # Request handlers
 │   ├── middleware/         # Custom middleware (auth, validation)
 │   ├── models/            # Mongoose models
